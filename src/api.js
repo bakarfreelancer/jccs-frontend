@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:3003";
+const baseUrl = "http://localhost:3303";
 
 export const loginUrl = () => `${baseUrl}/login`;
 export const registerUrl = () => `${baseUrl}/register`;

@@ -1,26 +1,20 @@
 import React from "react";
 
 // npm packages
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import axios from "axios";
 import Cookies from "universal-cookie";
-
 // custom imports
 import { loginUrl } from "../api";
 import { loginUser } from "../actions/usersAction";
-import { useEffect } from "react";
 
 const cookies = new Cookies();
 export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const {
-    currentUser: { token },
-  } = useSelector((state) => state.users);
 
   const login = (event) => {
     event.preventDefault();
@@ -32,23 +26,25 @@ export const Login = () => {
 
       if (response.status === 200) {
         dispatch(loginUser(response.data));
-        cookies.set("token", response.data.token);
+        cookies.set("currentUser", response.data);
         navigate("/");
       }
     };
     loginReq({ email, password });
   };
-  if (cookies.get("token")) return <Navigate replace to="/" />;
+  if (cookies.get("currentUser")) return <Navigate replace to="/" />;
   else
     return (
-      <>
+      <div className="row">
         <h1>Login</h1>
-        <LoginForm onSubmit={login}>
+        <LoginForm className="col-3" onSubmit={login}>
           <input type="email" placeholder="email" name="email" />
           <input type="password" placeholder="password" name="password" />
-          <button type="submit    ">Login</button>
+          <button className="btn btn-primary" type="submit">
+            Login
+          </button>
         </LoginForm>
-      </>
+      </div>
     );
 };
 
