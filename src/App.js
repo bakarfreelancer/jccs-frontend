@@ -10,7 +10,8 @@ import GlobalStyles from "./components/GlobalStyles";
 
 function App() {
   return (
-    <GlobalStyles>
+    <div className="container">
+      <GlobalStyles />
       <Nav />
       <Routes>
         <Route path="/" element={<Home />}></Route>
@@ -19,7 +20,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/addpost" element={<AddPost />} />
       </Routes>
-    </GlobalStyles>
+    </div>
   );
 }
 

@@ -13,17 +13,21 @@ export const Logout = () => {
   useEffect(() => {
     const logout = async () => {
       dispatch(loggedOut());
-      await axios.post(
-        logoutUrl(),
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      try {
+        await axios.post(
+          logoutUrl(),
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
     };
-    navigate("/");
+    navigate("/login");
     if (token) logout();
   }, [dispatch, navigate, token]);
 
