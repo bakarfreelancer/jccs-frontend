@@ -1,28 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUrl } from "../api";
+import { loggedOut } from "../features/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
-const cookies = new Cookies();
 export const Logout = () => {
-  const {
-    currentUser: { token },
-  } = useSelector((state) => state.users);
-  const logout = async (token) => {
-    cookies.remove("currentUser");
-    const res = await axios.post(
-      logoutUrl(),
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(res);
-  };
-  logout(token);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state?.currentUser?.currentUser?.token);
+  useEffect(() => {
+    const logout = async () => {
+      dispatch(loggedOut());
+      await axios.post(
+        logoutUrl(),
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    };
+    navigate("/");
+    if (token) logout();
+  }, [dispatch, navigate, token]);
+
   return <div>Logout</div>;
 };

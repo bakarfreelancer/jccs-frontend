@@ -6,17 +6,12 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import Cookies from "universal-cookie";
 
 // API
 import { registerUrl } from "../api";
 import { Navigate } from "react-router-dom";
-
-const cookies = new Cookies();
 export const Register = () => {
-  const {
-    currentUser: { token },
-  } = useSelector((state) => state.users);
+  const token = useSelector((state) => state?.currentUser?.currentUser?.token);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -27,8 +22,10 @@ export const Register = () => {
 
   const getData = async (event) => {
     event.preventDefault();
+    setRegError("");
 
     if (password !== confPassword) {
+      setRegError("Passwords does n't match");
       return;
     }
     const registerResponse = await axios.post(registerUrl(), {
@@ -46,46 +43,49 @@ export const Register = () => {
     console.log(registerResponse.data);
   };
 
-  if (cookies.get("currentUser")) return <Navigate replace to="/" />;
+  if (token) return <Navigate replace to="/" />;
   return (
-    <RegisterForm onSubmit={getData}>
-      <input
-        type="text"
-        name="firstname"
-        placeholder="First Name"
-        value={firstName}
-        onChange={(event) => setFirstName(event.target.value)}
-      />
-      <input
-        type="text"
-        name="lastname"
-        placeholder="Last Name"
-        value={lastName}
-        onChange={(event) => setLastName(event.target.value)}
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      <input
-        type="password"
-        name="confirmPassword"
-        placeholder="Confirm Password"
-        value={confPassword}
-        onChange={(event) => setConfPassword(event.target.value)}
-      />
-      <button type="submit">Register</button>
-    </RegisterForm>
+    <>
+      <div>{regError}</div>
+      <RegisterForm onSubmit={getData}>
+        <input
+          type="text"
+          name="firstname"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(event) => setFirstName(event.target.value)}
+        />
+        <input
+          type="text"
+          name="lastname"
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(event) => setLastName(event.target.value)}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          value={confPassword}
+          onChange={(event) => setConfPassword(event.target.value)}
+        />
+        <button type="submit">Register</button>
+      </RegisterForm>
+    </>
   );
 };
 

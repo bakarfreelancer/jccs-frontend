@@ -10,6 +10,15 @@ export const loginUser = (data) => (dispatch) => {
     },
   });
 };
+export const testData = (data) => (dispatch) => {
+  // const loginAttempt = await axios.post(loginUrl(), credentials);
+  dispatch({
+    type: "TEST",
+    payload: {
+      current: data,
+    },
+  });
+};
 
 export const logoutUser = () => async (dispatch) => {
   dispatch({

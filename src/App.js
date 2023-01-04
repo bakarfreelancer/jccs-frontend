@@ -5,10 +5,12 @@ import { Routes, Route } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Logout } from "./pages/Logout";
 import { AddPost } from "./pages/AddPost";
+// Styles
+import GlobalStyles from "./components/GlobalStyles";
 
 function App() {
   return (
-    <>
+    <GlobalStyles>
       <Nav />
       <Routes>
         <Route path="/" element={<Home />}></Route>
@@ -17,7 +19,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/addpost" element={<AddPost />} />
       </Routes>
-    </>
+    </GlobalStyles>
   );
 }
 
