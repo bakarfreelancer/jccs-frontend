@@ -1,27 +1,35 @@
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
-import { Register } from "./pages/Register";
+import { Register } from "./components/Register";
 import { Routes, Route } from "react-router-dom";
-import { Login } from "./pages/Login";
-import { Logout } from "./pages/Logout";
+import { Logout } from "./components/Logout";
 import { AddPost } from "./pages/AddPost";
 // Styles
 import GlobalStyles from "./components/GlobalStyles";
+import { Account } from "./pages/Account";
+import styled from "styled-components";
+import { SinglePost } from "./pages/SinglePost";
 
 function App() {
   return (
-    <div className="container">
+    <>
       <GlobalStyles />
-      <Nav />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/login" element={<Login />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/addpost" element={<AddPost />} />
+        <Route path="/post/:id" element={<SinglePost />} />
       </Routes>
-    </div>
+      <NavSpace />
+      <Nav />
+    </>
   );
 }
 
 export default App;
+
+const NavSpace = styled.div`
+  height: 65px;
+`;

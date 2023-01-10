@@ -23,11 +23,9 @@ export const Logout = () => {
             },
           }
         );
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     };
-    navigate("/login");
+    navigate("/account");
     if (token) logout();
   }, [dispatch, navigate, token]);
 
