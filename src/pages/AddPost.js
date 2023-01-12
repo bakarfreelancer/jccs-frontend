@@ -12,7 +12,7 @@ import { addPostUrl } from "../api";
 import featured from "../images/featured.png";
 
 export const AddPost = () => {
-  const currentUser = useSelector((state) => state?.currentUser?.currentUser);
+  const currentUser = useSelector((state) => state?.currentUser);
   const token = currentUser.token;
 
   const [title, setTitle] = useState("");
@@ -26,6 +26,10 @@ export const AddPost = () => {
   const [success, setSuccess] = useState("");
 
   const handleForm = async (event) => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     event.preventDefault();
     setError("");
     setSuccess("");

@@ -9,13 +9,14 @@ import axios from "axios";
 // custom imports
 import { loginUrl } from "../api";
 import { loggedIn } from "../features/user/userSlice";
+import { resetState } from "../features/post/postSlice";
 
 export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState("");
 
-  const token = useSelector((state) => state?.currentUser?.currentUser?.token);
+  const token = useSelector((state) => state?.currentUser?.token);
   const login = async (event) => {
     event.preventDefault();
     setError("");
@@ -27,6 +28,7 @@ export const Login = () => {
 
       if (response.status === 200) {
         dispatch(loggedIn(response.data));
+        dispatch(resetState());
         navigate("/");
       }
     } catch (e) {

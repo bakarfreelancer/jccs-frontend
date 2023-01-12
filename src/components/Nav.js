@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 const Nav = () => {
   const pathname = useLocation().pathname;
-  const token = useSelector((state) => state?.currentUser?.currentUser?.token);
+  const token = useSelector((state) => state?.currentUser?.token);
   return (
     <Navigation className=" navbar fixed-bottom navbar-expand-lg bg-body-tertiary bg-light">
       <ul className="container col-12 col-md-6 list-unstyled d-flex justify-content-between my-0">
@@ -19,7 +19,7 @@ const Nav = () => {
                 : "nav-link text-center"
             }
             to="/">
-            <House size={25} />
+            <House size={22} />
             <p>Home</p>
           </Link>
         </li>
@@ -32,7 +32,7 @@ const Nav = () => {
                   : "nav-link text-center"
               }
               to="/addpost">
-              <PencilSquare size={25} />
+              <PencilSquare size={22} />
               <p>Add Post</p>
             </Link>
           </li>
@@ -45,7 +45,7 @@ const Nav = () => {
                 : "nav-link text-center"
             }
             to="account">
-            <Person size={25} />
+            <Person size={22} />
             <p>Account</p>
           </Link>
         </li>
@@ -58,7 +58,7 @@ export default Nav;
 
 const Navigation = styled.nav`
   a > p {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     margin-bottom: 0;
   }
 `;

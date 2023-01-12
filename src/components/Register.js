@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { registerUrl } from "../api";
 import { Link, Navigate } from "react-router-dom";
 export const Register = () => {
-  const token = useSelector((state) => state?.currentUser?.currentUser?.token);
+  const token = useSelector((state) => state?.currentUser?.token);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

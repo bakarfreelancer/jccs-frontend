@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { rootUrl } from "../api";
 
-export const PostCard = ({ post, scrollPosition }) => {
+export const PostCard = ({ post }) => {
   const navigate = useNavigate();
   const navigateToSinglePost = (postID) => {
     navigate(`/post/${postID}`);
@@ -16,7 +17,7 @@ export const PostCard = ({ post, scrollPosition }) => {
       <h3 className="p-5">{post.title}</h3>
 
       {post.image && (
-        <img className="w-100" src={post.image} alt={post.title} />
+        <img className="w-100" src={rootUrl() + post.image} alt={post.title} />
       )}
       <div>{post.date}</div>
     </div>

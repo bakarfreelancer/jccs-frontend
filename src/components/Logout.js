@@ -5,14 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUrl } from "../api";
 import { loggedOut } from "../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { resetState } from "../features/post/postSlice";
 
 export const Logout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state?.currentUser?.currentUser?.token);
+  const token = useSelector((state) => state?.currentUser?.token);
   useEffect(() => {
     const logout = async () => {
       dispatch(loggedOut());
+      dispatch(resetState());
       try {
         await axios.post(
           logoutUrl(),

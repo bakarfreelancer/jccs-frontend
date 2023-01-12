@@ -3,62 +3,72 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { privatePostsUrl, publicPostsUrl } from "../api";
 import { PostCard } from "./PostCard";
-import { getPosts } from "../features/post/postSlice";
+import { getPosts, updatePage, setLastList } from "../features/post/postSlice";
 
 export const Posts = () => {
-  const dispatch = useDispatch();
-  const token = useSelector((state) => state?.currentUser?.currentUser?.token);
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState("");
-  const [page, setPage] = useState(0);
-  const [lastList, setLastList] = useState(false);
-  const [isLoading, setLoading] = useState(null);
   const postsRef = useRef();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state?.currentUser?.token);
+  const posts = useSelector((state) => state?.posts.posts);
+  const page = useSelector((state) => state?.posts?.page);
+  const lastList = useSelector((state) => state?.posts?.lastList);
+  const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(null);
 
+  useEffect(() => {
+    const scrollPosition = localStorage.getItem("scrollPosition");
+    postsRef.current.scrollTop = scrollPosition;
+  }, []);
+
+  // Scroll Pagination Listner
   const postsScroll = () => {
     if (postsRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = postsRef.current;
+      localStorage.setItem("scrollPosition", scrollTop);
       if (
         scrollTop + clientHeight === scrollHeight &&
         !isLoading &&
         !lastList
       ) {
-        setPage(page + 1);
+        dispatch(updatePage());
+        fetchData();
       }
     }
   };
 
+  // API Call
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = token
+        ? await axios.post(
+            privatePostsUrl(),
+            { page: page + 1 },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+        : await axios.post(publicPostsUrl(), { page: page + 1 });
+      dispatch(getPosts(response.data));
+      !response?.data?.length && dispatch(setLastList(true));
+    } catch (error) {
+      // setError("Internal server error occured, try again!");
+      setError(JSON.stringify(error));
+    }
+    setLoading(false);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      await setLoading(true);
-      try {
-        const response = token
-          ? await axios.post(
-              privatePostsUrl(),
-              { page },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-          : await axios.post(publicPostsUrl(), { page });
-        setPosts([...posts, ...response.data]);
-        dispatch(getPosts(response.data));
-        !response?.data?.length && setLastList(true);
-      } catch (error) {
-        setError("Internal server error occured, try again!");
-      }
-      await setLoading(false);
-    };
-    fetchData();
-  }, [page]);
-
-  const statePosts = useSelector((state) => state?.posts);
-  console.log(statePosts);
+    if (page === -1) {
+      fetchData();
+      dispatch(updatePage());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return error ? (
-    <div>Unexpected Error Occur</div>
+    <div>{error}</div>
   ) : (
     <div
       onScroll={postsScroll}
