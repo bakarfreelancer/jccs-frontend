@@ -2,7 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
 :root{
-    --primary: #1A8FE3;
+    --primary: #6610F2;
+    --secondary: #1A8FE3;
     --accent: #F37933;
 }
 $primary: red;
@@ -13,6 +14,9 @@ $primary: red;
 .btn-accent{
     background-color: var(--accent);
     border-color: var(--accent);
+}
+.icon-primary{
+  fill: var(--primary);
 }
 
 /* Navigation */

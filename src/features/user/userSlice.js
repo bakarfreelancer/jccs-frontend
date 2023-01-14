@@ -6,7 +6,6 @@ const initialState = {
 };
 const reducers = {
   loggedIn: (state, action) => {
-    console.log(action.payload);
     state.user = action.payload.user;
     state.token = action.payload.token;
   },

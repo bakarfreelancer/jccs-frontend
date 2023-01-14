@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { privatePostsUrl, publicPostsUrl } from "../api";
 import { PostCard } from "./PostCard";
 import { getPosts, updatePage, setLastList } from "../features/post/postSlice";
+import styled from "styled-components";
+import { Loading } from "./Loading";
 
 export const Posts = () => {
   const postsRef = useRef();
@@ -54,8 +56,7 @@ export const Posts = () => {
       dispatch(getPosts(response.data));
       !response?.data?.length && dispatch(setLastList(true));
     } catch (error) {
-      // setError("Internal server error occured, try again!");
-      setError(JSON.stringify(error));
+      setError("Internal server error occured, try again!");
     }
     setLoading(false);
   };
@@ -67,18 +68,21 @@ export const Posts = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return error ? (
-    <div>{error}</div>
-  ) : (
-    <div
-      onScroll={postsScroll}
-      style={{ height: "100vh", overflowY: "auto" }}
-      ref={postsRef}>
+  if (error) return;
+  <div>{error}</div>;
+  if (isLoading && page === -1) return <Loading size={5} />;
+  return (
+    <PostsWraper onScroll={postsScroll} ref={postsRef}>
       {posts.map((post, i) => {
         return <PostCard post={post} key={i} />;
       })}
-      {isLoading && <h4>Loading...</h4>}
-      {lastList && <h4>No more posts</h4>}
-    </div>
+      {isLoading && <Loading size={2} />}
+      {lastList && <h4 className="text-center text-primary">No more posts</h4>}
+    </PostsWraper>
   );
 };
+
+const PostsWraper = styled.div`
+  overflow-y: auto;
+  height: calc(100vh - 94px);
+`;

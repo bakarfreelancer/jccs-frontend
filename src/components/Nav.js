@@ -9,7 +9,7 @@ const Nav = () => {
   const pathname = useLocation().pathname;
   const token = useSelector((state) => state?.currentUser?.token);
   return (
-    <Navigation className=" navbar fixed-bottom navbar-expand-lg bg-body-tertiary bg-light">
+    <Navigation className="navbar fixed-bottom navbar-expand-lg bg-body-tertiary bg-light p-1 border-top">
       <ul className="container col-12 col-md-6 list-unstyled d-flex justify-content-between my-0">
         <li className="nav-item px-2">
           <Link

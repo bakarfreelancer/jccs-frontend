@@ -10,11 +10,13 @@ import { Account } from "./pages/Account";
 import styled from "styled-components";
 import { SinglePost } from "./pages/SinglePost";
 import { UpdateProfile } from "./components/UpdateProfile";
+import { Header } from "./components/Header";
 
 function App() {
   return (
     <>
       <GlobalStyles />
+      <Header />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/account" element={<Account />} />
@@ -33,5 +35,5 @@ function App() {
 export default App;
 
 const NavSpace = styled.div`
-  height: 65px;
+  height: 57px;
 `;
