@@ -4,8 +4,11 @@ import React, { useEffect, useState } from "react";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import { rootUrl, singlePostUrl, singlePublicPostUrl } from "../api";
 import { Loading } from "../components/Loading";
+import { datetime } from "../utils/date-time";
+import user from "../images/user.png";
 
 export const SinglePost = () => {
   const navigate = useNavigate();
@@ -28,7 +31,6 @@ export const SinglePost = () => {
             })
           : await axios.get(singlePublicPostUrl(id), {});
         setPost(response.data);
-        console.log(response.data);
       } catch (e) {
         e.response.status === 404
           ? setError("Post not found!")
@@ -53,21 +55,63 @@ export const SinglePost = () => {
       </div>
     );
   return (
-    <article className="container my-2">
-      <div className="row justify-content-between align-items-center">
-        <h1 className="col-auto text-capitalize">{post.title}</h1>
-        <div className="col-auto" onClick={() => navigate(-1)}>
-          <ArrowLeft size={30} className="icon-primary" />
+    <Artilce className="container my-2 ">
+      <div className="w-100 mx-auto">
+        <div className="row justify-content-between align-items-center">
+          <div className="col-1" role="button" onClick={() => navigate(-1)}>
+            <ArrowLeft size={30} className="icon-primary" />
+          </div>
+          <h1 className="col-10 text-capitalize text-center">{post.title}</h1>
+          <div className="col-1"></div>
+        </div>
+        <hr />
+        {post.image && (
+          <img
+            className="featured w-100 d-block mx-auto"
+            src={rootUrl() + post.image}
+            alt={post.title}
+          />
+        )}
+        <div className="p-2">
+          <b>Posted: </b>
+          <small>{datetime(post.date)}</small>
+        </div>
+        {post.content && (
+          <div
+            className="my-2"
+            dangerouslySetInnerHTML={{ __html: purifier.purify(post.content) }}
+          />
+        )}
+        <div
+          className="card p-3 my-2"
+          role="button"
+          onClick={() => (token ? navigate(`/user/${post.author._id}`) : null)}>
+          <h4>Author:</h4>
+          <div className="row align-items-center">
+            <div className="col-3">
+              <img
+                className="rounded-circle w-100"
+                src={post.author.image ? rootUrl() + post.author.image : user}
+                alt={post.author.firstName}
+              />
+            </div>
+            <div className="col-9">
+              <b className="text-primary">
+                {post.author.firstName} {post.author.lastName}
+              </b>
+              <p>{post.author.description}</p>
+            </div>
+          </div>
         </div>
       </div>
-      {post.image && (
-        <img className="w-100" src={rootUrl() + post.image} alt={post.title} />
-      )}
-      {post.content && (
-        <div
-          dangerouslySetInnerHTML={{ __html: purifier.purify(post.content) }}
-        />
-      )}
-    </article>
+    </Artilce>
   );
 };
+const Artilce = styled.article`
+  > div {
+    max-width: 800px;
+  }
+  .featured {
+    max-width: 620px;
+  }
+`;

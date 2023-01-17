@@ -11,6 +11,9 @@ import styled from "styled-components";
 import { SinglePost } from "./pages/SinglePost";
 import { UpdateProfile } from "./components/UpdateProfile";
 import { Header } from "./components/Header";
+import { SingleUser } from "./pages/SingleUser";
+import { UserPosts } from "./pages/UserPosts";
+import { UserDrafts } from "./pages/UserDrafts";
 
 function App() {
   return (
@@ -24,7 +27,11 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/update-profile" element={<UpdateProfile />} />
         <Route path="/addpost" element={<AddPost />} />
+        <Route path="/edit/:id" element={<AddPost />} />
         <Route path="/post/:id" element={<SinglePost />} />
+        <Route path="/my-posts" element={<UserPosts />} />
+        <Route path="/my-drafts" element={<UserDrafts />} />
+        <Route path="/user/:id" element={<SingleUser />} />
       </Routes>
       <NavSpace />
       <Nav />

@@ -3,35 +3,14 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { rootUrl } from "../api";
 import user from "../images/user.png";
+import { datetime } from "../utils/date-time";
 
 export const PostCard = ({ post }) => {
   const navigate = useNavigate();
   const navigateToSinglePost = (postID) => {
     navigate(`/post/${postID}`);
   };
-
-  // Time format
-  const now = new Date();
-  const postDate = new Date(post.date);
-  const difference = now - postDate;
-  const hours = Math.floor(difference / 3600000);
-  const minutes = Math.floor(difference / 60000);
-  const days = Math.floor(difference / 86400000);
-  const options = {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  };
-  const date =
-    minutes < 6
-      ? `${minutes} m.`
-      : hours < 24
-      ? `${hours} h.`
-      : days < 30
-      ? `${days} d.`
-      : postDate.toLocaleDateString("en-GB", options) + ".";
-
-  console.log(post.author);
+  const date = datetime(post.date);
   return (
     <Card
       role="button"

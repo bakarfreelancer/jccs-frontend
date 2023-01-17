@@ -1,6 +1,7 @@
 import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import { ArrowLeft, Trash3 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -8,23 +9,27 @@ import { rootUrl, singleUserUrl } from "../api";
 import { updateUser } from "../features/user/userSlice";
 
 export const UpdateProfile = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const currentUser = useSelector((state) => state?.currentUser);
   const { user } = currentUser;
   const token = currentUser?.token;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
   const [image, setImage] = useState("");
   const [description, setDescription] = useState(user.description);
+
+  const [qualTitle, setQualTitle] = useState("");
+  const [qualYear, setQualYear] = useState("");
+  const [qualification, setQualification] = useState(user.qualification);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const getData = async (event) => {
     event.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
     setError("");
+    setSuccess("");
 
     if (image && image?.size / (1024 * 1024) > 5) {
       setError("Image size must be less that 5Mb.");
@@ -42,6 +47,8 @@ export const UpdateProfile = () => {
     image &&
       !user.image.endsWith(image.name.toLowerCase().split(" ").join("-")) &&
       formData.append("image", image);
+    qualification !== user.qualification &&
+      formData.append("qualification", JSON.stringify(qualification));
 
     try {
       const response = await axios.patch(singleUserUrl(user._id), formData, {
@@ -53,7 +60,6 @@ export const UpdateProfile = () => {
 
       if (response?.status === 200) setSuccess("Account updated successfully!");
     } catch (e) {
-      console.log(e);
       if (e?.response?.data?.keyPattern?.email)
         setError("Email already exists use another email.");
       else if (e?.response?.data?.errors?.password)
@@ -61,17 +67,30 @@ export const UpdateProfile = () => {
       else setError("Opps! Server is unable to handle request try again.");
     }
   };
+  const addQualification = () => {
+    if (!qualTitle || !qualYear) return;
+    setQualification([...qualification, { title: qualTitle, year: qualYear }]);
+    setQualTitle("");
+    setQualYear("");
+  };
+  const removeQualification = (i) => {
+    const qual = [...qualification];
+    qual.splice(i, 1);
+    setQualification(qual);
+  };
 
   if (!token) return <Navigate replace to="/" />;
   return (
     <div className="container">
       <div className="card p-4 my-5 col-lg-5 col-12 col-md-7 col-sm-12 mx-auto">
-        <button onClick={() => navigate(-1)}>Back</button>
-        <h1 className="text-primary">Update Profile</h1>
+        <div className="row justify-content-between align-items-center">
+          <h1 className="text-primary col-auto fs-2">Update Profile</h1>
+          <div className="col-auto" role="button" onClick={() => navigate(-1)}>
+            <ArrowLeft size={30} className="icon-primary" />
+          </div>
+        </div>
         <hr />
-        {error && <div className="alert alert-danger">{error}</div>}
-        {success && <div className="alert alert-success">{success}</div>}
-        <UserUpdateForm onSubmit={getData}>
+        <UserUpdateForm onSubmit={getData} className="mb-2">
           <div className="row mb-3">
             <div className="col-6">
               <label htmlFor="firstname" className="form-label">
@@ -153,6 +172,71 @@ export const UpdateProfile = () => {
               onChange={(event) => setDescription(event.target.value)}
               value={description}></textarea>
           </div>
+          {/* Qualification */}
+          <div>
+            <div className="pb-3">
+              <p className="mb-1">Add Qualification</p>
+              <hr />
+              <label className="form-label" htmlFor="qualification">
+                Qualification
+              </label>
+              <input
+                className="form-control mb-1"
+                type="text"
+                id="qualification"
+                placeholder="Your qualification"
+                value={qualTitle}
+                onChange={(event) => setQualTitle(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                  }
+                }}
+              />
+              <label className="form-label" htmlFor="year">
+                Year
+              </label>
+              <div className="row align-items-center">
+                <div className="col-9">
+                  <input
+                    className="form-control"
+                    type="number"
+                    id="year"
+                    placeholder="20xx"
+                    value={qualYear}
+                    onChange={(event) => setQualYear(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                      }
+                    }}
+                  />
+                </div>
+                <div className="col-3">
+                  <div onClick={addQualification} className="btn btn-accent">
+                    Add
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              {qualification.map((qualification, i) => {
+                return (
+                  <div key={i} className="row m-1">
+                    <div className="mb-1 col-3">{qualification.year}</div>
+                    <div className="col-8">{qualification.title}</div>
+                    <div
+                      className="col-1 pb-2  text-danger"
+                      role="button"
+                      onClick={() => removeQualification(i)}>
+                      <Trash3 size={25} />
+                    </div>
+                    <hr />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
           <div className=" col text-end">
             <button
               type="submit"
@@ -161,6 +245,8 @@ export const UpdateProfile = () => {
             </button>
           </div>
         </UserUpdateForm>
+        {error && <div className="alert alert-danger">{error}</div>}
+        {success && <div className="alert alert-success">{success}</div>}
       </div>
     </div>
   );
