@@ -60,6 +60,7 @@ export const UpdateProfile = () => {
 
       if (response?.status === 200) setSuccess("Account updated successfully!");
     } catch (e) {
+      console.log(e);
       if (e?.response?.data?.keyPattern?.email)
         setError("Email already exists use another email.");
       else if (e?.response?.data?.errors?.password)

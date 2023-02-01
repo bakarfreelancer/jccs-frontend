@@ -87,7 +87,6 @@ export const Posts = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, page]);
 
-  console.log(isLoading);
   if (error)
     return (
       <div className="alert alert-danger my-2" ref={postsRef}>

@@ -44,7 +44,7 @@ export const Logout = () => {
       <div
         className="modal fade"
         id="logoutModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="logoutModalLabel"
         aria-hidden="true">
         <div className="modal-dialog">
