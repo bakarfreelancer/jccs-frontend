@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import { rootUrl, singleUserUrl } from "../api";
 import { Loading } from "../components/Loading";
 import userImg from "../images/user.png";
@@ -60,7 +61,7 @@ export const SingleUser = () => {
     );
 
   return (
-    <div className="container my-3">
+    <MemberInfo className="container my-3">
       <div className="row justify-content-left align-items-center">
         <div className="col-auto" role="button">
           <ArrowLeft
@@ -73,14 +74,14 @@ export const SingleUser = () => {
         <hr />
       </div>
       <div className="row align-items-start">
-        <div className="col-3">
+        <div className="col-12 col-md-3 text-center">
           <img
-            className="rounded-circle w-100"
+            className="rounded-circle userImg"
             src={user.image ? rootUrl() + user.image : userImg}
             alt={user.firstName}
           />
         </div>
-        <div className="col-9">
+        <div className="col-12 col-md-9">
           <b className="text-primary">
             {user.firstName} {user.lastName}
           </b>
@@ -114,6 +115,13 @@ export const SingleUser = () => {
           })}
         </div>
       </div>
-    </div>
+    </MemberInfo>
   );
 };
+const MemberInfo = styled.div`
+  .userImg {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+  }
+`;

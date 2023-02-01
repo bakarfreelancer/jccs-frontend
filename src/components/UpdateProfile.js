@@ -83,11 +83,11 @@ export const UpdateProfile = () => {
   return (
     <div className="container">
       <div className="card p-4 my-5 col-lg-5 col-12 col-md-7 col-sm-12 mx-auto">
-        <div className="row justify-content-between align-items-center">
-          <h1 className="text-primary col-auto fs-2">Update Profile</h1>
+        <div className="row align-items-center">
           <div className="col-auto" role="button" onClick={() => navigate(-1)}>
             <ArrowLeft size={30} className="icon-primary" />
           </div>
+          <h1 className="text-primary col-auto fs-2">Update Profile</h1>
         </div>
         <hr />
         <UserUpdateForm onSubmit={getData} className="mb-2">

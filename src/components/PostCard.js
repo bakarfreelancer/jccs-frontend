@@ -17,13 +17,12 @@ export const PostCard = ({ post }) => {
       onClick={() => navigateToSinglePost(post._id)}
       className="card m-2 p-3">
       <div className="d-flex align-items-center author">
-        <div className="pe-2">
-          <img
-            src={post.author.image ? rootUrl() + post.author.image : user}
-            alt="Author"
-            className="rounded-circle"
-          />
-        </div>
+        <img
+          src={post.author.image ? rootUrl() + post.author.image : user}
+          alt="Author"
+          className="rounded-circle me-2"
+        />
+
         <div>
           <p className="m-0">
             {post.author.firstName + " " + post.author.lastName}
@@ -35,7 +34,11 @@ export const PostCard = ({ post }) => {
       <h3 className="fs-5 pt-2 ps-1">{post.title}</h3>
 
       {post.image && (
-        <img className="w-100" src={rootUrl() + post.image} alt={post.title} />
+        <img
+          className="w-100 post-thumbnail"
+          src={rootUrl() + post.image}
+          alt={post.title}
+        />
       )}
     </Card>
   );
@@ -43,7 +46,13 @@ export const PostCard = ({ post }) => {
 const Card = styled.div`
   .author {
     img {
-      max-width: 40px;
+      object-fit: cover;
+      width: 50px;
+      height: 50px;
     }
+  }
+  .post-thumbnail {
+    aspect-ratio: 4/3;
+    object-fit: contain;
   }
 `;

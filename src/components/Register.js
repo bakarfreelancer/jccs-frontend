@@ -62,7 +62,7 @@ export const Register = () => {
         {error && <div className="alert alert-danger">{error}</div>}
         {success && (
           <div className="alert alert-success">
-            {success} <Link to="/login">Login Here</Link>
+            {success} <Link to="/account">Login Here</Link>
           </div>
         )}
         <RegisterForm onSubmit={getData}>
@@ -127,7 +127,7 @@ export const Register = () => {
               />
             </div>
             <div className="col-6">
-              <label htmlFor="email" className="form-label">
+              <label htmlFor="confirmPassword" className="form-label">
                 Confirm password
               </label>
               <input

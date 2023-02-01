@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 import storage from "redux-persist/lib/storage";
 import persistStore from "redux-persist/es/persistStore";
 import userReducer from "../features/user/userSlice";
+import communityReducer from "../features/community/communitySlice";
 import postReducer from "../features/post/postSlice";
 const persistConfig = {
   key: "root",
@@ -15,6 +16,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   currentUser: userReducer,
   posts: postReducer,
+  community: communityReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -82,20 +82,22 @@ export const SinglePost = () => {
             dangerouslySetInnerHTML={{ __html: purifier.purify(post.content) }}
           />
         )}
+
+        {/* Post Author Info start */}
         <div
-          className="card p-3 my-2"
+          className="card p-3 my-2 author"
           role="button"
           onClick={() => (token ? navigate(`/user/${post.author._id}`) : null)}>
           <h4>Author:</h4>
-          <div className="row align-items-center">
-            <div className="col-3">
+          <div className="row align-items-start">
+            <div className="col-12 col-md-3 text-center">
               <img
-                className="rounded-circle w-100"
+                className="rounded-circle"
                 src={post.author.image ? rootUrl() + post.author.image : user}
                 alt={post.author.firstName}
               />
             </div>
-            <div className="col-9">
+            <div className="col-12 col-md-9">
               <b className="text-primary">
                 {post.author.firstName} {post.author.lastName}
               </b>
@@ -113,5 +115,12 @@ const Artilce = styled.article`
   }
   .featured {
     max-width: 620px;
+  }
+  .author {
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
   }
 `;

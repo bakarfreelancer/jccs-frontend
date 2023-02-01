@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { posts: [], page: -1, lastList: false };
+const initialState = { posts: [], page: -1, lastList: false, postsRef: null };
 
 const reducers = {
   getPosts: (state, action) => {
@@ -17,6 +17,9 @@ const reducers = {
     state.page = -1;
     state.lastList = false;
   },
+  setPostsRef: (state, action) => {
+    state.postsRef = action.payload;
+  },
 };
 
 const postSlice = createSlice({
@@ -25,7 +28,7 @@ const postSlice = createSlice({
   reducers,
 });
 
-export const { getPosts, updatePage, setLastList, resetState } =
+export const { getPosts, updatePage, setLastList, resetState, setPostsRef } =
   postSlice.actions;
 
 export default postSlice.reducer;

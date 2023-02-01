@@ -14,6 +14,8 @@ import { Header } from "./components/Header";
 import { SingleUser } from "./pages/SingleUser";
 import { UserPosts } from "./pages/UserPosts";
 import { UserDrafts } from "./pages/UserDrafts";
+import { Community } from "./pages/Community";
+import { Feedback } from "./pages/Feedback";
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
         <Route path="/my-posts" element={<UserPosts />} />
         <Route path="/my-drafts" element={<UserDrafts />} />
         <Route path="/user/:id" element={<SingleUser />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/feedback" element={<Feedback />} />
       </Routes>
       <NavSpace />
       <Nav />

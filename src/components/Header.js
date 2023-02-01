@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 export const Header = () => {
   return (
-    <Head className="bg-white border-bottom border-light">
+    <Head className="bg-white border-bottom border-light py-1">
       <div className="container">
         <div className="row justify-content-between align-items-center">
           <h1 className="fs-4 text-primary col-auto">
